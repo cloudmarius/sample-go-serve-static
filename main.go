@@ -27,6 +27,7 @@ func main() {
 
 	fs := http.FileServer(http.Dir(fileServerFolder))
 	http.Handle("/static/", http.StripPrefix("/static", fs))
+	http.HandleFunc("/", okHandler)
 	http.HandleFunc("/hi", hiHandler)
 	http.HandleFunc("/greet/howdy", howdyHandler)
 	http.HandleFunc("/greet/ciao", ciaoHandler)
@@ -37,6 +38,9 @@ func main() {
 		log.Fatal(err)
 	}
 
+}
+
+func okHandler(rw http.ResponseWriter, req *http.Request) {
 }
 
 func hiHandler(rw http.ResponseWriter, req *http.Request) {
