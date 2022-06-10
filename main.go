@@ -18,7 +18,7 @@ func main() {
 	}
 	fileServerFolder = os.Getenv("FILE_SERVER_FOLDER")
 	if len(fileServerFolder) == 0 {
-		log.Fatal("env var FILE_SERVER_FOLDER is not set properly")
+		fileServerFolder = "/var/www"
 	}
 	port := os.Getenv("PORT")
 	if len(port) == 0 {
