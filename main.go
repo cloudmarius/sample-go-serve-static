@@ -7,18 +7,20 @@ import (
 	"os"
 )
 
-var greeting string
-var fileServerFolder string
+var (
+	greeting         string
+	fileServerFolder string
+)
 
 func main() {
 
 	greeting = os.Getenv("GREETING")
 	if len(greeting) == 0 {
-		greeting = "Howdy"
+		greeting = "Hello"
 	}
 	fileServerFolder = os.Getenv("FILE_SERVER_FOLDER")
 	if len(fileServerFolder) == 0 {
-		fileServerFolder = "/var/www"
+		fileServerFolder = "/tmp/www"
 	}
 	port := os.Getenv("PORT")
 	if len(port) == 0 {
@@ -33,7 +35,7 @@ func main() {
 	http.HandleFunc("/greet/ciao", ciaoHandler)
 
 	address := "0.0.0.0:" + port
-	log.Printf("Starting web server, listening on [%s] ...\n", address)
+	log.Printf("Starting web server, listening on [%s], serving files from [%s], greeting with [%s]\n", address, fileServerFolder, greeting)
 	if err := http.ListenAndServe(address, nil); err != nil {
 		log.Fatal(err)
 	}
@@ -74,9 +76,11 @@ func writeGreet(greet string) error {
 	if err != nil && !os.IsExist(err) {
 		return err
 	}
-	err = os.WriteFile(fileServerFolder+"/greet.txt", []byte(greet), 0640)
-	if err != nil {
-		return err
+	for i := 0; i < 100; i++ {
+		err = os.WriteFile(fileServerFolder+fmt.Sprintf("/greet-%d.txt", i), []byte(greet), 0640)
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }
