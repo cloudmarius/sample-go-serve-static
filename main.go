@@ -46,15 +46,15 @@ func okHandler(rw http.ResponseWriter, req *http.Request) {
 }
 
 func hiHandler(rw http.ResponseWriter, req *http.Request) {
-	fmt.Fprintf(rw, "%s\n", greeting)
+	fmt.Fprintf(rw, "%s", greeting)
 }
 
 func howdyHandler(rw http.ResponseWriter, req *http.Request) {
-	patchGreet(rw, req, "Howdy\n")
+	patchGreet(rw, req, "Howdy")
 }
 
 func ciaoHandler(rw http.ResponseWriter, req *http.Request) {
-	patchGreet(rw, req, "Ciao\n")
+	patchGreet(rw, req, "Ciao")
 }
 
 func patchGreet(rw http.ResponseWriter, req *http.Request, greet string) {
@@ -77,7 +77,7 @@ func writeGreet(greet string) error {
 		return err
 	}
 	for i := 0; i < 100; i++ {
-		err = os.WriteFile(fileServerFolder+fmt.Sprintf("/greet-%d.txt", i), []byte(greet), 0640)
+		err = os.WriteFile(fileServerFolder+fmt.Sprintf("/greet-%d.txt", i), []byte(greet), 0664)
 		if err != nil {
 			return err
 		}
