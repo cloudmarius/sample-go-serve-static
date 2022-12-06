@@ -31,6 +31,7 @@ func main() {
 	http.Handle("/static/", http.StripPrefix("/static", fs))
 	http.HandleFunc("/", okHandler)
 	http.HandleFunc("/hi", hiHandler)
+	http.HandleFunc("/config", configHandler)
 	http.HandleFunc("/greet/howdy", howdyHandler)
 	http.HandleFunc("/greet/ciao", ciaoHandler)
 
@@ -47,6 +48,11 @@ func okHandler(rw http.ResponseWriter, req *http.Request) {
 
 func hiHandler(rw http.ResponseWriter, req *http.Request) {
 	fmt.Fprintf(rw, "%s", greeting)
+}
+
+func configHandler(rw http.ResponseWriter, req *http.Request) {
+	rw.Header().Add("Content-Type", "application/x-yaml")
+	fmt.Fprintf(rw, "---\ngreeting: %s\nfileServerFolder: %s", greeting, fileServerFolder)
 }
 
 func howdyHandler(rw http.ResponseWriter, req *http.Request) {
